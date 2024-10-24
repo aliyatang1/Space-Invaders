@@ -92,10 +92,10 @@ void setup() {
     return;
   }
 
-  startGameMessage1 = alienFonts.getSprite("j = left");
-  startGameMessage2 = alienFonts.getSprite("k = right");
-  startGameMessage3 = alienFonts.getSprite("f = fire");
-  startGameMessage4 = alienFonts.getSprite("s = start game");
+  startGameMessage1 = alienFonts.getSprite("towards front screw = left");
+  startGameMessage2 = alienFonts.getSprite("towards back screw = right");
+  startGameMessage3 = alienFonts.getSprite("button click = fire");
+  startGameMessage4 = alienFonts.getSprite("keyboard click = start game");
 
   gameOverMessage = alienFonts.getSprite("you're dead... game over!!!!");
   youWonMessage = alienFonts.getSprite("you won!");
@@ -212,7 +212,7 @@ void keyPressed() {
     }
   }
 }
-
+j
 void keyReleased() {
   shipDirection = 0;
 }
