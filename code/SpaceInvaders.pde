@@ -95,7 +95,7 @@ void setup() {
   startGameMessage1 = alienFonts.getSprite("towards front screw = left");
   startGameMessage2 = alienFonts.getSprite("towards back screw = right");
   startGameMessage3 = alienFonts.getSprite("button click = fire");
-  startGameMessage4 = alienFonts.getSprite(" click = start game");
+  startGameMessage4 = alienFonts.getSprite("button click = start game");
 
   gameOverMessage = alienFonts.getSprite("you're dead... game over!!!!");
   youWonMessage = alienFonts.getSprite("you won!");
