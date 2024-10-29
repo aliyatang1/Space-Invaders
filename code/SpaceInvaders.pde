@@ -95,7 +95,7 @@ void setup() {
   startGameMessage1 = alienFonts.getSprite("towards front screw = left");
   startGameMessage2 = alienFonts.getSprite("towards back screw = right");
   startGameMessage3 = alienFonts.getSprite("button click = fire");
-  startGameMessage4 = alienFonts.getSprite("keyboard click = start game");
+  startGameMessage4 = alienFonts.getSprite(" click = start game");
 
   gameOverMessage = alienFonts.getSprite("you're dead... game over!!!!");
   youWonMessage = alienFonts.getSprite("you won!");
@@ -113,31 +113,25 @@ void setup() {
   frameRate(60);
 }
 
+boolean buttonPreviouslyPressed = false; // Track previous button state
+
 void draw() {
   // Read serial data from joystick and button
   if (myPort != null && myPort.available() > 0) {
     String val = myPort.readStringUntil('\n');
     if (val != null) {
       val = trim(val);
-      println("Received data: " + val);
-
       String[] xyzStrings = split(val, ",");
-      println(xyzStrings);
-      if (xyzStrings.length >= 3) {
+      if (xyzStrings.length >= 4) {  // Ensure at least 4 elements
         try {
           int xVal = int(xyzStrings[0]);
           int yVal = int(xyzStrings[1]);
           int zVal = int(xyzStrings[3]);
-          
-          println("x-value:" + xVal);
-          println("y-value:" + yVal);
-          println("z-value:" + zVal);
 
-          // Map joystick values to game logic
           joystickX = xVal;
           buttonZ = zVal; // Z-axis value for the button state
 
-          // Implement dead zone for joystick
+          // Joystick dead zone handling
           int min_threshold = 1650;
           int max_threshold = 1900;
           if (abs(joystickX) < max_threshold && abs(joystickX) > min_threshold) {
@@ -147,15 +141,10 @@ void draw() {
           } else if (abs(joystickX) > max_threshold && abs(joystickX) < 4000) {
             shipDirection = 2; // Move right
           }
-          println("direction: ", shipDirection);
 
-          // Handle shooting based on button press (Z-axis)
-          if (buttonZ == 0) { // Adjusted for INPUT_PULLUP (LOW when pressed)
-            launchBullet = true;
-          }
+          // Detect bullet launch on button press
+          launchBullet = (buttonZ == 0);
 
-          // Debugging output (optional)
-          // println("shipDirection: " + shipDirection + ", launchBullet: " + launchBullet);
         } catch (NumberFormatException e) {
           println("Error parsing serial data: " + e.getMessage());
         }
@@ -164,6 +153,15 @@ void draw() {
       }
     }
   }
+
+  // Check buttonZ for game start/restart with single press detection
+  boolean buttonCurrentlyPressed = (buttonZ == 0);
+  if (buttonCurrentlyPressed && !buttonPreviouslyPressed) {
+    if (gameMode == 0 || gameMode == 2 || gameMode == 3) { 
+      resetGame();
+    }
+  }
+  buttonPreviouslyPressed = buttonCurrentlyPressed; // Update button state
 
   // Game mode handling
   switch (gameMode) {
@@ -182,48 +180,18 @@ void draw() {
   }
 }
 
+
 void resetGame() {
   squadronSpeed = 40;
   enemySquadron = new EnemySquadron();
   scoreBoard.Lives = 3;
   scoreBoard.Score = 0;
   player.reset();
-  gameMode = 1;
+  gameMode = 1;  // Set the game mode to play
   player.X = 120;
   player.Y = 170;
 }
 
-// Commented out keyboard input to prevent conflicts with joystick
-/*
-void keyPressed() {
-  if (gameMode == 0) {
-    if (key == 's') {
-      resetGame();
-    }
-  } else if (gameMode == 1) {
-    if (key == 'j') {
-      shipDirection = 1;
-    }
-    if (key == 'k') {
-      shipDirection = 2;
-    }
-    if (key == 'f') {
-      launchBullet = true;
-    }
-  }
-}
-j
-void keyReleased() {
-  shipDirection = 0;
-}
-*/
-
-void mousePressed() {
-  // Allow starting the game with a mouse click
-  if (gameMode == 0) {
-    resetGame();
-  }
-}
 
 /***********************************************
 
@@ -609,7 +577,7 @@ void drawStartScreenText(int x, int y) {
   textFont(font);
   fill(100, 100, 200);
 
-  text("Press s to start", x, y);
-  text("use j and k to move left and right", x, y + 30);
-  text("use f to fire", x, y + 60);
+  text("Press button to start", x, y);
+  text("Use joystick to move left and right", x, y + 30);
+  text("Press button to fire", x, y + 60);
 }
