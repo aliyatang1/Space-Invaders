@@ -4,6 +4,10 @@ Hi everyone! This project is a modified **Space Invaders** game, enhanced with j
 
 The original game code is based on this repository: [fernandozamoraj's Space Invaders](https://github.com/fernandozamoraj/processing_sandbox/tree/master/SpaceInvaders), and I’ve modified it to work with physical inputs.
 
+<p align="center">
+  <img src="gif/output.gif" alt="GIF of my game"  height="300"/>
+</p>
+
 _**Design Goals**_:
 
 Replace traditional keyboard controls with a joystick and a button for immersive gameplay. The joystick controls the player’s movement, while the button starts the game and shoots at enemies. Each player has three lives, so the player needs to defeat the aliens in time to survive.
