@@ -17,11 +17,13 @@ Lily-TTGO board
 USB-C cable that connects to your laptop
 
 _Setup_:
+
 Connect the Hardware: Attach the joystick and button to the microcontroller and ensure it can communicate with Processing through the serial port. Use the Fritzing diagram as a reference to where you should connect the joystick and button onto the breadboard.
 Install Processing Libraries: Make sure processing.serial is included in your Processing IDE for serial communication.
 Clone and Run the Code: Clone this repository, open the .pde file in Processing, and run the sketch.
 
 _How to Play_:
+
 Start: Press the button to start the game from the main screen.
 Move: Use the joystick to move the player left or right.
 Shoot: Press the button to fire at the aliens above.
